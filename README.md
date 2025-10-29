@@ -1,18 +1,10 @@
-# Renode Renode
+# Renode Homebrew Tap
 
-## How do I install these formulae?
+This is a 3:rd party homebrew tap for Renode
 
-`brew install renode/renode/<formula>`
+## Installation instructions
 
-Or `brew tap renode/renode` and then `brew install <formula>`.
+`brew install renode/tap/renode` to install the stable version
 
-Or, in a [`brew bundle`](https://github.com/Homebrew/homebrew-bundle) `Brewfile`:
+Or `brew install renode/tap/renode --HEAD` to build and install current master
 
-```ruby
-tap "renode/renode"
-brew "<formula>"
-```
-
-## Documentation
-
-`brew help`, `man brew` or check [Homebrew's documentation](https://docs.brew.sh).
