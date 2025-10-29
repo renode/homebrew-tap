@@ -1,0 +1,102 @@
+.scalenode-arm64-macos-settings: &scalenode-arm64-macos-settings
+  variables:
+    SCALENODE_CPU: 4
+    SCALENODE_DISK: 40
+    SCALENODE_RAM: 4000
+    SCALENODE_FEATURES: macos-aarch64
+
+.ignore-bottle-updates: &ignore-bottle-updates
+  except:
+    variables:
+       - $CI_COMMIT_TITLE =~ / update .* bottle/
+       - $CI_COMMIT_TITLE =~ / add .* bottle/
+
+.only_main_and_all_mrs: &only_main_and_all_mrs
+  only:
+    variables:
+    - $CI_COMMIT_REF_NAME == "main"
+    - $CI_PIPELINE_SOURCE == "merge_request"
+
+.setup-tap: &setup-tap
+  before_script:
+    - brew tap renode/homebrew-renode $CI_REPOSITORY_URL
+    - pushd /opt/homebrew/Library/Taps/renode/homebrew-renode
+    - git switch $CI_COMMIT_REF_NAME
+    - popd
+
+.setup-rosetta-tap: &setup-rosetta-tap
+  before_script:
+    - arch -x86_64 bash -c 'NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"'
+    - eval "$(/usr/local/bin/brew shellenv)"
+    - which brew
+    - brew tap renode/homebrew-renode $CI_REPOSITORY_URL
+    - pushd /usr/local/Homebrew/Library/Taps/renode/homebrew-renode
+    - git switch $CI_COMMIT_REF_NAME
+    - popd
+
+.build-bottle: &build-bottle |-
+    brew install --build-bottle renode
+    renode --version
+    brew test renode
+    brew bottle renode --root-url "builds.renode.io/brew" --json renode
+    # Homebrew creates local files with $NAME--$VERSION but expects the uploaded files to be called $NAME-$VERSION (note the double vs single dash).
+    # Both names are in the generated json file, so extract them from the json file and rename the bottle from .local_filename to .filename
+    mv $(cat renode*.bottle.json | jq -r '.. | .local_filename? | select(. != null)') $(cat renode*.bottle.json | jq -r '.. | .filename? | select(. != null)')
+
+stages:
+  - build
+  - deploy
+
+arm64-macos:
+  stage: build
+  <<: *scalenode-arm64-macos-settings
+  <<: *ignore-bottle-updates
+  <<: *only_main_and_all_mrs
+  dependencies: []
+  <<: *setup-tap
+  script:
+    - *build-bottle
+  artifacts:
+    paths:
+        - renode*.json
+        - renode*.tar.gz
+x86-macos:
+  stage: build
+  dependencies: []
+  <<: *scalenode-arm64-macos-settings
+  <<: *ignore-bottle-updates
+  <<: *only_main_and_all_mrs
+  <<: *setup-rosetta-tap
+  script:
+    - eval "$(/usr/local/bin/brew shellenv)"
+    - *build-bottle
+  artifacts:
+    paths:
+        - renode*.json
+        - renode*.tar.gz
+
+
+publish:
+  stage: deploy
+  <<: *scalenode-arm64-macos-settings
+  <<: *ignore-bottle-updates
+  <<: *only_main_and_all_mrs
+  only:
+    variables:
+      - $CI_COMMIT_REF_NAME == "main"
+  <<: *setup-tap
+  script:
+    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+    - git config --global user.email "HomebrewBot@renode"
+    - git config --global user.name "Homebrew Bot"
+    - brew bottle --write --merge renode*.json
+    - eval $(ssh-agent -s)
+    - echo "$RENODE_DL_KEY" > key
+    - chmod 0400 key
+    - ssh-add key
+    - echo "$RENODE_DL_TARGET_DIR"
+    - scp renode*.tar.gz "${RENODE_DL_USER}"@"${RENODE_DL_HOST}":"${RENODE_DL_TARGET_DIR}"
+    - pushd /opt/homebrew/Library/Taps/renode/homebrew-renode
+    - git show HEAD
+    - git push
+    - popd
