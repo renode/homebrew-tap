@@ -1,5 +1,7 @@
 # Renode Homebrew Tap
 
+Copyright (c) 2025 [Antmicro](https://www.antmicro.com)
+
 This is a 3:rd party homebrew tap for Renode
 
 ## Installation instructions
