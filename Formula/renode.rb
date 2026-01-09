@@ -14,7 +14,7 @@ class Renode < Formula
   depends_on "cmake" => :build
   depends_on "coreutils" => :build
   depends_on "dialog"
-  depends_on "dotnet@9"
+  depends_on "dotnet@10"
   depends_on "gtk+3"
   depends_on "libyaml"
   depends_on "mono-libgdiplus"
