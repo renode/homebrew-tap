@@ -4,8 +4,8 @@ class Renode < Formula
   desc "Antmicro's open source simulation and development framework for embedded systems"
   homepage "https://renode.io"
   url "https://github.com/renode/renode.git",
-      tag: "v1.16.0",
-      revision: "20ad06d9379997829df309c5724be94ba4effedd"
+      tag: "v1.16.1",
+      revision: "d66b0c2aa3d420408eccecfd1d3bab0fd702a6db"
   license "MIT"
 
   head "https://github.com/renode/renode.git", branch: "master"
@@ -58,7 +58,7 @@ class Renode < Formula
   end
 
   def install
-    dotnet = Formula["dotnet@9"]
+    dotnet = Formula["dotnet@10"]
     if Hardware::CPU.arm?
       system "./build.sh", "--net", "--host-arch", "aarch64"
     else
