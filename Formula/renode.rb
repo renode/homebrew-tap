@@ -12,9 +12,9 @@ class Renode < Formula
 
   bottle do
     root_url "builds.renode.io/brew"
-    rebuild 1
-    sha256 cellar: :any, arm64_sequoia: "9a2f984e5a16dd1d9a5c6f2feba32359e0af64f799e88d3b9a6bfd6972f83352"
-    sha256 cellar: :any, sequoia:       "68e22537f48ca282c35e1f3d69422369314fe940ed2ee52973f8dbb8a0f2cc82"
+    rebuild 2
+    sha256 cellar: :any, arm64_sequoia: "70ac3c9b87504fc949fcc4cea22e0bab77505cf029d57224800de4ab01c185e9"
+    sha256 cellar: :any, sequoia:       "fe35f4cbe919d8a37ec966af4de2ea010e80575a0475b66b56f7ca80b2341de0"
   end
 
   depends_on "binutils" => :build
