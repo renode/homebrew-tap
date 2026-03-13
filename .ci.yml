@@ -11,11 +11,23 @@
        - $CI_COMMIT_TITLE =~ / update .* bottle/
        - $CI_COMMIT_TITLE =~ / add .* bottle/
 
-.only_main_and_all_mrs: &only_main_and_all_mrs
+.only_stable_changes: &only_stable_changes
   only:
-    variables:
-    - $CI_COMMIT_REF_NAME == "main"
-    - $CI_PIPELINE_SOURCE == "merge_request"
+    refs:
+      - merge_requests
+      - main
+    changes:
+      - .ci.yml
+      - Formula/renode.rb
+
+.only_nightly_changes: &only_nightly_changes
+  only:
+    refs:
+      - merge_requests
+      - main
+    changes:
+      - .ci.yml
+      - Formula/renode-nightly.rb
 
 .setup-tap: &setup-tap
   before_script:
@@ -35,10 +47,10 @@
     - popd
 
 .build-bottle: &build-bottle |-
-    brew install --build-bottle renode
+    brew install --build-bottle $FORMULA_NAME
     renode --version
-    brew test renode
-    brew bottle renode --root-url "builds.renode.io/brew" --json renode
+    brew test $FORMULA_NAME
+    brew bottle $FORMULA_NAME --root-url "builds.renode.io/brew" --json $FORMULA_NAME
     # Homebrew creates local files with $NAME--$VERSION but expects the uploaded files to be called $NAME-$VERSION (note the double vs single dash).
     # Both names are in the generated json file, so extract them from the json file and rename the bottle from .local_filename to .filename
     mv $(cat renode*.bottle.json | jq -r '.. | .local_filename? | select(. != null)') $(cat renode*.bottle.json | jq -r '.. | .filename? | select(. != null)')
@@ -47,43 +59,74 @@ stages:
   - build
   - deploy
 
-arm64-macos:
+arm64-macos-stable:
   stage: build
+  dependencies: []
   <<: *scalenode-arm64-macos-settings
   <<: *ignore-bottle-updates
-  <<: *only_main_and_all_mrs
-  dependencies: []
+  <<: *only_stable_changes
   <<: *setup-tap
   script:
-    - *build-bottle
-  artifacts:
-    paths:
-        - renode*.json
-        - renode*.tar.gz
-x86-macos:
-  stage: build
-  dependencies: []
-  <<: *scalenode-arm64-macos-settings
-  <<: *ignore-bottle-updates
-  <<: *only_main_and_all_mrs
-  <<: *setup-rosetta-tap
-  script:
-    - eval "$(/usr/local/bin/brew shellenv)"
+    - export FORMULA_NAME=renode
     - *build-bottle
   artifacts:
     paths:
         - renode*.json
         - renode*.tar.gz
 
+x86-macos-stable:
+  stage: build
+  dependencies: []
+  <<: *scalenode-arm64-macos-settings
+  <<: *ignore-bottle-updates
+  <<: *only_stable_changes
+  <<: *setup-rosetta-tap
+  script:
+    - eval "$(/usr/local/bin/brew shellenv)"
+    - export FORMULA_NAME=renode
+    - *build-bottle
+  artifacts:
+    paths:
+        - renode*.json
+        - renode*.tar.gz
+
+arm64-macos-nightly:
+  stage: build
+  dependencies: []
+  <<: *scalenode-arm64-macos-settings
+  <<: *ignore-bottle-updates
+  <<: *only_nightly_changes
+  <<: *setup-tap
+  script:
+    - export FORMULA_NAME=renode-nightly
+    - *build-bottle
+  artifacts:
+    paths:
+        - renode*.json
+        - renode*.tar.gz
+x86-macos-nightly:
+  stage: build
+  dependencies: []
+  <<: *scalenode-arm64-macos-settings
+  <<: *ignore-bottle-updates
+  <<: *only_nightly_changes
+  <<: *setup-rosetta-tap
+  script:
+    - eval "$(/usr/local/bin/brew shellenv)"
+    - export FORMULA_NAME=renode-nightly
+    - *build-bottle
+  artifacts:
+    paths:
+        - renode*.json
+        - renode*.tar.gz
 
 publish:
   stage: deploy
   <<: *scalenode-arm64-macos-settings
   <<: *ignore-bottle-updates
-  <<: *only_main_and_all_mrs
   only:
-    variables:
-      - $CI_COMMIT_REF_NAME == "main"
+    refs:
+      - main
   <<: *setup-tap
   script:
     - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
@@ -97,6 +140,6 @@ publish:
     - echo "$RENODE_DL_TARGET_DIR"
     - scp renode*.tar.gz "${RENODE_DL_USER}"@"${RENODE_DL_HOST}":"${RENODE_DL_TARGET_DIR}"
     - pushd /opt/homebrew/Library/Taps/renode/homebrew-renode
-    - git show HEAD
+    - git show origin..HEAD
     - git push
     - popd

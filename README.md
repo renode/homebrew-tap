@@ -8,5 +8,5 @@ This is a 3:rd party homebrew tap for Renode
 
 `brew install renode/tap/renode` to install the stable version
 
-Or `brew install renode/tap/renode --HEAD` to build and install current master
+Or `brew install renode/tap/renode-nightly` to install the latest nightly version
 

@@ -1,21 +1,14 @@
-class Renode < Formula
+class RenodeNightly < Formula
   include Language::Python::Virtualenv
 
   desc "Antmicro's open source simulation and development framework for embedded systems"
   homepage "https://renode.io"
   url "https://github.com/renode/renode.git",
-    tag: "v1.16.1",
-    revision: "d66b0c2aa3d420408eccecfd1d3bab0fd702a6db"
+      revision: "fc1aca9b1b6362128b7afd7de0994d1f46ee38e9"
+  version "1.16.1+20260316"
   license "MIT"
 
   head "https://github.com/renode/renode.git", branch: "master"
-
-  bottle do
-    root_url "builds.renode.io/brew"
-    rebuild 2
-    sha256 cellar: :any, arm64_sequoia: "70ac3c9b87504fc949fcc4cea22e0bab77505cf029d57224800de4ab01c185e9"
-    sha256 cellar: :any, sequoia:       "fe35f4cbe919d8a37ec966af4de2ea010e80575a0475b66b56f7ca80b2341de0"
-  end
 
   depends_on "binutils" => :build
   depends_on "cmake" => :build
@@ -28,7 +21,7 @@ class Renode < Formula
   depends_on "mono-libgdiplus"
   depends_on "python"
 
-  conflicts_with "renode-nightly", because: "different version of the same package"
+  conflicts_with "renode", because: "different version of the same package"
 
   resource "robotframework-retryfailed" do
     url "https://files.pythonhosted.org/packages/4b/99/4ffc2253cbff664c93f4fe63663a0d0a68862c7bbe40aea6f324fd371ef3/robotframework-retryfailed-0.2.0.tar.gz"
