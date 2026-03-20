@@ -89,6 +89,7 @@ x86-macos-stable:
     paths:
         - renode*.json
         - renode*.tar.gz
+  retry: 2
 
 arm64-macos-nightly:
   stage: build
@@ -119,6 +120,7 @@ x86-macos-nightly:
     paths:
         - renode*.json
         - renode*.tar.gz
+  retry: 2
 
 publish:
   stage: deploy
