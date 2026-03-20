@@ -10,6 +10,13 @@ class RenodeNightly < Formula
 
   head "https://github.com/renode/renode.git", branch: "master"
 
+  bottle do
+    root_url "builds.renode.io/brew"
+    rebuild 1
+    sha256 cellar: :any, arm64_tahoe: "c665591a8db0e0fd633fe3cbec0d1a8d3276585e2f9b34436a6266e0f78fbb3d"
+    sha256 cellar: :any, tahoe:       "42d64f617ce06e9924cbc96997fd544ed5800c80095abdfcce0ad75423f589c3"
+  end
+
   depends_on "binutils" => :build
   depends_on "cmake" => :build
   depends_on "coreutils" => :build
