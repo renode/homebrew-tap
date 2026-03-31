@@ -12,9 +12,9 @@ class RenodeNightly < Formula
 
   bottle do
     root_url "builds.renode.io/brew"
-    rebuild 9
-    sha256 cellar: :any, arm64_tahoe: "ade17604c01fc09c61e8ab06d7e60d316e561b594cec103e4e1b94dbc15f13c4"
-    sha256 cellar: :any, tahoe:       "45a77ba28397a0db68779756eb95157842a9809ed1ac3f9baa9f9ae3faffd224"
+    rebuild 10
+    sha256 cellar: :any, arm64_tahoe: "65c4024ba6f7936316dc677ac29860bf20ff9e2aef4a51446e442515cc89baec"
+    sha256 cellar: :any, tahoe:       "f9d33f1a802a355f51e30a3cab5d9b8791a880d396f25e83a34386e0d92b8cfd"
   end
 
   depends_on "binutils" => :build
