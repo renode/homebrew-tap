@@ -4,8 +4,8 @@ class RenodeNightly < Formula
   desc "Antmicro's open source simulation and development framework for embedded systems"
   homepage "https://renode.io"
   url "https://github.com/renode/renode.git",
-      revision: "1507a0ffd7169d7979bea0b3f6681658d281e4c7"
-  version "1.16.1-20260414"
+      revision: "8e4e7b807fa6e89581ee5d9387ad7780b8b9fb9d"
+  version "1.16.1-20260416"
   license "MIT"
 
   head "https://github.com/renode/renode.git", branch: "master"
