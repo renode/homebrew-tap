@@ -1,4 +1,5 @@
 .scalenode-arm64-macos-settings: &scalenode-arm64-macos-settings
+  image: macos://latest
   variables:
     SCALENODE_CPU: 4
     SCALENODE_DISK: 40
