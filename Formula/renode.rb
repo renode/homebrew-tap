@@ -26,7 +26,7 @@ class Renode < Formula
   depends_on "gtk+3"
   depends_on "libyaml"
   depends_on "mono-libgdiplus"
-  depends_on "python@3.10"
+  depends_on "python@3.12"
 
   conflicts_with "renode-nightly", because: "different version of the same package"
 
