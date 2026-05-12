@@ -93,26 +93,25 @@ class RenodeNightly < Formula
     # Remove uneeded files
     rm_r (libexec/"tests"/"unit-tests"/"RenodeTests")
 
-    rm_r (libexec/"output"/"bin"/"Release"/"runtimes"/"android-arm")
-    rm_r (libexec/"output"/"bin"/"Release"/"runtimes"/"android-arm64")
-    rm_r (libexec/"output"/"bin"/"Release"/"runtimes"/"android-x64")
-    rm_r (libexec/"output"/"bin"/"Release"/"runtimes"/"android-x86")
-    rm_r (libexec/"output"/"bin"/"Release"/"runtimes"/"ios-arm")
-    rm_r (libexec/"output"/"bin"/"Release"/"runtimes"/"ios-arm64")
-    rm_r (libexec/"output"/"bin"/"Release"/"runtimes"/"ios-armv7s")
-    rm_r (libexec/"output"/"bin"/"Release"/"runtimes"/"iossimulator-x64")
-    rm_r (libexec/"output"/"bin"/"Release"/"runtimes"/"linux-arm")
-    rm_r (libexec/"output"/"bin"/"Release"/"runtimes"/"maccatalyst-arm64")
-    rm_r (libexec/"output"/"bin"/"Release"/"runtimes"/"maccatalyst-x64")
-    rm_r (libexec/"output"/"bin"/"Release"/"runtimes"/"tvos-arm64")
-    rm_r (libexec/"output"/"bin"/"Release"/"runtimes"/"tvossimulator-x64")
-    rm_r (libexec/"output"/"bin"/"Release"/"runtimes"/"unix")
-    rm_r (libexec/"output"/"bin"/"Release"/"runtimes"/"win")
+    rm_rf (libexec/"output"/"bin"/"Release"/"runtimes"/"android-arm")
+    rm_rf (libexec/"output"/"bin"/"Release"/"runtimes"/"android-arm64")
+    rm_rf (libexec/"output"/"bin"/"Release"/"runtimes"/"android-x64")
+    rm_rf (libexec/"output"/"bin"/"Release"/"runtimes"/"android-x86")
+    rm_rf (libexec/"output"/"bin"/"Release"/"runtimes"/"ios-arm")
+    rm_rf (libexec/"output"/"bin"/"Release"/"runtimes"/"ios-arm64")
+    rm_rf (libexec/"output"/"bin"/"Release"/"runtimes"/"ios-armv7s")
+    rm_rf (libexec/"output"/"bin"/"Release"/"runtimes"/"iossimulator-x64")
+    rm_rf (libexec/"output"/"bin"/"Release"/"runtimes"/"linux-arm")
+    rm_rf (libexec/"output"/"bin"/"Release"/"runtimes"/"maccatalyst-arm64")
+    rm_rf (libexec/"output"/"bin"/"Release"/"runtimes"/"maccatalyst-x64")
+    rm_rf (libexec/"output"/"bin"/"Release"/"runtimes"/"tvos-arm64")
+    rm_rf (libexec/"output"/"bin"/"Release"/"runtimes"/"tvossimulator-x64")
+    rm_rf (libexec/"output"/"bin"/"Release"/"runtimes"/"win")
 
-    rm_r (libexec/"output"/"bin"/"Release"/"runtimes"/"linux-arm64") if !OS.linux? || Hardware::CPU.intel?
-    rm_r (libexec/"output"/"bin"/"Release"/"runtimes"/"linux-x64") if !OS.linux? || Hardware::CPU.arm?
-    rm_r (libexec/"output"/"bin"/"Release"/"runtimes"/"osx-arm64") if !OS.mac? || Hardware::CPU.intel?
-    rm_r (libexec/"output"/"bin"/"Release"/"runtimes"/"osx-x64") if !OS.mac? || Hardware::CPU.arm?
+    rm_rf (libexec/"output"/"bin"/"Release"/"runtimes"/"linux-arm64") if !OS.linux? || Hardware::CPU.intel?
+    rm_rf (libexec/"output"/"bin"/"Release"/"runtimes"/"linux-x64") if !OS.linux? || Hardware::CPU.arm?
+    rm_rf (libexec/"output"/"bin"/"Release"/"runtimes"/"osx-arm64") if !OS.mac? || Hardware::CPU.intel?
+    rm_rf (libexec/"output"/"bin"/"Release"/"runtimes"/"osx-x64") if !OS.mac? || Hardware::CPU.arm?
 
     # Copy licenses to output
     libexec.install "licenses"
