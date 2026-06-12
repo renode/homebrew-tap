@@ -33,6 +33,7 @@
 .setup-tap: &setup-tap
   before_script:
     - brew tap renode/homebrew-renode $CI_REPOSITORY_URL
+    - brew trust renode/homebrew-renode
     - pushd /opt/homebrew/Library/Taps/renode/homebrew-renode
     - git switch $CI_COMMIT_REF_NAME
     - popd
@@ -43,6 +44,7 @@
     - eval "$(/usr/local/bin/brew shellenv)"
     - which brew
     - brew tap renode/homebrew-renode $CI_REPOSITORY_URL
+    - brew trust renode/homebrew-renode
     - pushd /usr/local/Homebrew/Library/Taps/renode/homebrew-renode
     - git switch $CI_COMMIT_REF_NAME
     - popd
