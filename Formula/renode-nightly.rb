@@ -21,6 +21,7 @@ class RenodeNightly < Formula
   depends_on "cmake" => :build
   depends_on "coreutils" => :build
   depends_on "parallel" => :build
+  depends_on "npm" => :build
   depends_on "dialog"
   depends_on "dotnet@10"
   depends_on "gtk+3"
@@ -62,11 +63,7 @@ class RenodeNightly < Formula
 
   def install
     dotnet = Formula["dotnet@10"]
-    if Hardware::CPU.arm?
-      system "./build.sh", "--net", "--host-arch", "aarch64"
-    else
-      system "./build.sh", "--net"
-    end
+    system "./build.sh", "--ui", "--shared"
 
     mkdir "licenses"
     if OS.mac?
