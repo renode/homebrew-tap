@@ -38,17 +38,6 @@
     - git switch $CI_COMMIT_REF_NAME
     - popd
 
-.setup-rosetta-tap: &setup-rosetta-tap
-  before_script:
-    - arch -x86_64 bash -c 'NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"'
-    - eval "$(/usr/local/bin/brew shellenv)"
-    - which brew
-    - brew tap renode/homebrew-renode $CI_REPOSITORY_URL
-    - brew trust renode/homebrew-renode
-    - pushd /usr/local/Homebrew/Library/Taps/renode/homebrew-renode
-    - git switch $CI_COMMIT_REF_NAME
-    - popd
-
 .build-bottle: &build-bottle |-
     brew install --build-bottle $FORMULA_NAME
     renode --version
@@ -77,23 +66,6 @@ arm64-macos-stable:
         - renode*.json
         - renode*.tar.gz
 
-x86-macos-stable:
-  stage: build
-  dependencies: []
-  <<: *scalenode-arm64-macos-settings
-  <<: *ignore-bottle-updates
-  <<: *only_stable_changes
-  <<: *setup-rosetta-tap
-  script:
-    - eval "$(/usr/local/bin/brew shellenv)"
-    - export FORMULA_NAME=renode
-    - *build-bottle
-  artifacts:
-    paths:
-        - renode*.json
-        - renode*.tar.gz
-  retry: 2
-
 arm64-macos-nightly:
   stage: build
   dependencies: []
@@ -107,23 +79,6 @@ arm64-macos-nightly:
   artifacts:
     paths:
         - renode*.json
-        - renode*.tar.gz
-x86-macos-nightly:
-  stage: build
-  dependencies: []
-  <<: *scalenode-arm64-macos-settings
-  <<: *ignore-bottle-updates
-  <<: *only_nightly_changes
-  <<: *setup-rosetta-tap
-  script:
-    - eval "$(/usr/local/bin/brew shellenv)"
-    - export FORMULA_NAME=renode-nightly
-    - *build-bottle
-  artifacts:
-    paths:
-        - renode*.json
-        - renode*.tar.gz
-  retry: 2
 
 publish:
   stage: deploy
