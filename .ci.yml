@@ -79,6 +79,7 @@ arm64-macos-nightly:
   artifacts:
     paths:
         - renode*.json
+        - renode*.tar.gz
 
 publish:
   stage: deploy
