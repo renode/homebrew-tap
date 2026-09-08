@@ -4,8 +4,8 @@ class Renode < Formula
   desc "Antmicro's open source simulation and development framework for embedded systems"
   homepage "https://renode.io"
   url "https://github.com/renode/renode.git",
-    tag: "v1.16.1",
-    revision: "d66b0c2aa3d420408eccecfd1d3bab0fd702a6db"
+    tag: "v1.17.0",
+    revision: "ab721d88e135a1bcb8ed2ecc5a38f51cbe61fdd2"
   license "MIT"
 
   head "https://github.com/renode/renode.git", branch: "master"
@@ -20,6 +20,7 @@ class Renode < Formula
   depends_on "cmake" => :build
   depends_on "coreutils" => :build
   depends_on "parallel" => :build
+  depends_on "npm" => :build
   depends_on "dialog"
   depends_on "dotnet@10"
   depends_on "gtk+3"
@@ -61,11 +62,7 @@ class Renode < Formula
 
   def install
     dotnet = Formula["dotnet@10"]
-    if Hardware::CPU.arm?
-      system "./build.sh", "--net", "--host-arch", "aarch64"
-    else
-      system "./build.sh", "--net"
-    end
+    system "./build.sh", "--ui", "--shared"
 
     mkdir "licenses"
     if OS.mac?
