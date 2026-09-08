@@ -32,6 +32,7 @@
 
 .setup-tap: &setup-tap
   before_script:
+    - git config --global http.version HTTP/1.1 # Workaround for GH issue
     - brew tap renode/homebrew-renode $CI_REPOSITORY_URL
     - brew trust renode/homebrew-renode
     - pushd /opt/homebrew/Library/Taps/renode/homebrew-renode
