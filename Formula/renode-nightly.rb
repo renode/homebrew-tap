@@ -5,7 +5,7 @@ class RenodeNightly < Formula
   homepage "https://renode.io"
   url "https://github.com/renode/renode.git",
       revision: "7233b1c4f48e211d9c8cfa1d51e01a9f4a095e51"
-  version "1.17.0-20260919"
+  version "1.17.0-20260920"
   license "MIT"
 
   head "https://github.com/renode/renode.git", branch: "master"
