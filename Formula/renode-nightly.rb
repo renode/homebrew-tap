@@ -21,6 +21,7 @@ class RenodeNightly < Formula
   depends_on "coreutils" => :build
   depends_on "parallel" => :build
   depends_on "npm" => :build
+  depends_on "pnpm" => :build
   depends_on "dialog"
   depends_on "dotnet@10"
   depends_on "gtk+3"
