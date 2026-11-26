@@ -4,8 +4,8 @@ class Renode < Formula
   desc "Antmicro's open source simulation and development framework for embedded systems"
   homepage "https://renode.io"
   url "https://github.com/renode/renode.git",
-    tag: "v1.17.0",
-    revision: "ab721d88e135a1bcb8ed2ecc5a38f51cbe61fdd2"
+    tag: "v1.17.1",
+    revision: "e91f8232b77f0b73d8f0804da6d2b231be4af046"
   license "MIT"
 
   head "https://github.com/renode/renode.git", branch: "master"
